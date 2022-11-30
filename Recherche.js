@@ -23,7 +23,9 @@ const height = Dimensions.get('window').height
 const myRef = React.createRef()
 
 
-
+this.state = {
+    data: []
+    }
 
 // const q = query(EventsRef, where("isPublic", "==", true));
 // const EventsSnapshot = await getDocs(q);
@@ -31,7 +33,7 @@ const myRef = React.createRef()
 class Recherche extends React.Component {
 
 
-    
+
     
 
 
@@ -127,17 +129,19 @@ class Recherche extends React.Component {
     }
 
     events_list = () => {
-        const [listEvents, setListEvents] = useState([]);
+        
         
         dbstore.collection("Events").get().then((snapshot) => {
             // snapshot.forEach((doc) => {
             //     console.log(doc.id, " => ", doc.data());
             // });
-            setListEvents(snapshot)
+            this.setState(snapshot)
         })
-        return(listEvents)
     }
 
+    componentDidMount() {
+        events_list()
+    }
 
     render() {
         return (
@@ -226,7 +230,7 @@ class Recherche extends React.Component {
                             ?
                             
                                 <ScrollView>
-                                    {this.events_list().map((item) => (
+                                    {this.state.data.map(item => (
                                         <View style={styles.style_event}>
                                             <Text key={item.id}>{item.id}</Text>
                                         </View>
